@@ -69,6 +69,7 @@
     <h2>Halo, <span id="name">pengguna LINE</span> 👋</h2>
     <button onclick="sendMessage()">Kirim Pesan ke Chat</button>
     <button onclick="liff.closeWindow()">Tutup LIFF</button>
+    <button onclick="forceLogin()">Login Ulang dengan Izin Kirim Pesan</button>
   </main>
 
   <footer>
@@ -79,8 +80,10 @@
     async function main() {
       await liff.init({ liffId: "2007940223-M0n7XdBr" });
 
+      const requiredScope = ['chat_message.write'];
+
       if (!liff.isLoggedIn()) {
-        liff.login({ scope: ['chat_message.write'] });
+        liff.login({ scope: requiredScope });
         return;
       }
 
@@ -98,6 +101,11 @@
       } catch (err) {
         alert("❌ Gagal kirim pesan: " + err.message);
       }
+    }
+
+    function forceLogin() {
+      liff.logout();
+      liff.login({ scope: ['chat_message.write'] });
     }
 
     main();
